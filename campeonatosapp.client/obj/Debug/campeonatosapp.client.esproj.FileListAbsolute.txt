@@ -1,0 +1,1 @@
+D:\.net\CampeonatosApp\campeonatosapp.client\obj\Debug\campeonatosapp.client.esproj.CoreCompileInputs.cache
