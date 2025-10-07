@@ -1,0 +1,16 @@
+<div>
+  <h2>Crear cuenta</h2>
+  <input type="email" [(ngModel)]="correo" placeholder="Correo" />
+  <input type="password" [(ngModel)]="password" placeholder="Contraseña" />
+  <input type="password" [(ngModel)]="confirmPassword" placeholder="Repite la contraseña" />
+  <button (click)="register()">Guardar</button>
+  <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+</div>
+<div *ngIf="isLoading"
+     class="bloqueo-pantalla"
+     style="">
+  <div class="carga-pantalla" role="status">
+    <span>Cargando...</span>
+  </div>
+</div>
+

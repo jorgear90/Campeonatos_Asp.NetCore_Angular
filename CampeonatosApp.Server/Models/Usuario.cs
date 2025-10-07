@@ -6,8 +6,8 @@ namespace CampeonatosApp.Server.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Correo { get; set; }
-        public string Cotraseña { get; set; }
+        public string Correo { get; set; } = string.Empty;
+        public string Contraseña { get; set; } = string.Empty;
 
         //CLAVE FORANEA DE SALIDA
         public virtual ICollection<UsuarioRoles> UsuariosRoles { get; set; } = new List<UsuarioRoles>();
