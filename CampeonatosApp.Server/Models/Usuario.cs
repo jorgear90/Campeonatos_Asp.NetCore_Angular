@@ -11,7 +11,7 @@ namespace CampeonatosApp.Server.Models
 
         //CLAVE FORANEA DE SALIDA
         public virtual ICollection<UsuarioRoles> UsuariosRoles { get; set; } = new List<UsuarioRoles>();
-
         public virtual ICollection<Jugador> Jugadores { get; set; } = new List<Jugador>();
+        public virtual ICollection<Equipo> Equipos { get; set; } = new List<Equipo>();
     }
 }

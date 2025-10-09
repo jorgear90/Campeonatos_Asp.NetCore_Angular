@@ -1,0 +1,12 @@
+<div class="toolbar">
+  <button *ngIf="!isLoggedIn" (click)="irAlLogin()">Iniciar sesión</button>
+  <button *ngIf="isLoggedIn" (click)="crearEquipo()">Crear equipo</button>
+  <button *ngIf="isLoggedIn" (click)="crearCampeonato()">Crear campeonato</button>
+  <button *ngIf="isLoggedIn" (click)="cerrarSesion()">Cerra sesión</button>
+</div>
+
+<div class="campeonatos-lista">
+  <h2>Campeonatos disponibles</h2>
+
+</div>
+
