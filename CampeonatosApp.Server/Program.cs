@@ -32,6 +32,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<EquipoService>();
+builder.Services.AddHttpContextAccessor();
 
 // ?? Configurar JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");

@@ -1,0 +1,48 @@
+<app-is-loading [isLoading]="isLoading"></app-is-loading>
+
+<div>
+  <div>
+    <button class="btn btn-outline-primary" (click)="abrirFiltro()">
+      Filtrar por región/comuna
+    </button>
+    <button class="btn btn-outline-secondary ms-2" (click)="reiniciarFiltros()">
+      <i class="bi bi-arrow-counterclockwise"></i> Reiniciar
+    </button>
+  </div>
+  <app-filter *ngIf="mostrarFiltro" (aplicarFiltros)="filtrarEquipos($event)" (cerrarFiltro)="mostrarFiltro = false"></app-filter>
+  <app-search-input [options]="nombresEquipos" (suggestionSelected)="onSuggestionSelected($event)" (cleared)="onCleared()" (search)="onSearch($event)" ></app-search-input>
+</div>
+
+<div *ngIf="!isLoading && equipos.length > 0">
+  <table class="table table-striped mt-4">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Region</th>
+        <th>Comuna</th>
+        <th>Logo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let equipo of equiposFiltrados">
+        <td>{{ equipo.nombre }}</td>
+        <td>{{ equipo.region }}</td>
+        <td>{{ equipo.comuna }}</td>
+        <td>
+          <img [src]="getLogoUrl(equipo)" alt="Logo del equipo" class="logo-equipo">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!isLoading && equipos.length === 0">
+  <p class="text-muted mt-3">No hay equipos para mostrar</p>
+</div>
+
+<app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
+
+<app-return-button [returnPath]="'/main'" [buttonText]="'Volver'"></app-return-button>
+<app-return-button [returnPath]="'/create-team'" [buttonText]="'Crear equipo'"></app-return-button>
+
+

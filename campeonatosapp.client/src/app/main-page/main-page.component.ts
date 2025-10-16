@@ -23,7 +23,15 @@ export class MainPageComponent {
   }
 
   crearEquipo() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/create-team']);
+  }
+
+  verEquipos() {
+    this.router.navigate(['/view-teams']);
+  }
+
+  misEquipos() {
+    this.router.navigate(['/my-teams']);
   }
 
   crearCampeonato() {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampeonatosApp.Server.Models
 {
@@ -8,6 +9,11 @@ namespace CampeonatosApp.Server.Models
         public int Id { get; set; }
         public string Correo { get; set; } = string.Empty;
         public string Contraseña { get; set; } = string.Empty;
+        public int ComunaID { get; set; }
+
+        //Clave foranea
+        [ForeignKey(nameof(ComunaID))]
+        public virtual Comuna? Comuna { get; set; }
 
         //CLAVE FORANEA DE SALIDA
         public virtual ICollection<UsuarioRoles> UsuariosRoles { get; set; } = new List<UsuarioRoles>();

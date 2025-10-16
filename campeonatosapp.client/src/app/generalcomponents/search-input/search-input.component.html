@@ -1,0 +1,22 @@
+<div class="input-group mt-3" style="max-width: 400px;">
+  <input type="text"
+         class="form-control"
+         placeholder="Buscar equipo..."
+         [(ngModel)]="searchText"
+         (input)="onInputChange()"
+         (keyup.enter)="onSearch()" />
+
+  <button class="btn btn-primary" (click)="onSearch()">Buscar</button>
+
+  <!-- Lista de sugerencias -->
+  <ul *ngIf="suggestions.length > 0"
+      class="suggestions-list"
+      style="max-width: 400px;">
+    <li *ngFor="let suggestion of suggestions"
+        class="list-group-item list-group-item-action"
+        (click)="selectSuggestion(suggestion)">
+      {{ suggestion }}
+    </li>
+  </ul>
+</div>
+

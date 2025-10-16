@@ -1,0 +1,31 @@
+<app-is-loading [isLoading]="isLoading"></app-is-loading>
+
+<div *ngIf="!isLoading && equipos.length > 0">
+  <table class="table table-striped mt-4">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Region</th>
+        <th>Comuna</th>
+        <th>Logo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let equipo of equipos">
+        <td>{{ equipo.nombre }}</td>
+        <td>{{ equipo.region }}</td>
+        <td>{{ equipo.comuna }}</td>
+        <td>
+          <img [src]="getLogoUrl(equipo)" alt="Logo del equipo" width="80">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-return-button [returnPath]="'/main'" [buttonText]="'Volver'"></app-return-button>
+<app-return-button [returnPath]="'/create-team'" [buttonText]="'Crear equipo'"></app-return-button>
+
+<div *ngIf="!isLoading && equipos.length === 0">
+  <p class="text-muted mt-3">{{ mensaje }}</p>
+</div>

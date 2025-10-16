@@ -16,7 +16,8 @@ namespace CampeonatosApp.Server.Data
         public DbSet<UsuarioRoles> UsuariosRoles { get; set; }
         public DbSet<Equipo> Equipos { get; set; }
         public DbSet<Jugador> Jugadores { get; set; }
-
+        public DbSet<Region> Regiones { get; set; }
+        public DbSet<Comuna> Comunas { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -34,6 +35,25 @@ namespace CampeonatosApp.Server.Data
                .HasForeignKey(t => t.RolesID)
                .OnDelete(DeleteBehavior.Restrict);
 
+            //Equipos
+            modelBuilder.Entity<Equipo>()
+                .HasOne(t => t.Usuario)
+                .WithMany(p => p.Equipos)
+                .HasForeignKey(t => t.UsuarioID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Equipo>()
+               .HasOne(t => t.Comuna)
+               .WithMany(p => p.Equipos)
+               .HasForeignKey(t => t.ComunaID)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            //Usuarios
+            modelBuilder.Entity<Equipo>()
+               .HasOne(t => t.Comuna)
+               .WithMany(p => p.Equipos)
+               .HasForeignKey(t => t.ComunaID)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

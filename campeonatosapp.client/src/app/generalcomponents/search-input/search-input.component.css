@@ -1,0 +1,26 @@
+.search-container {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 15px;
+}
+
+.suggestions-list {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  z-index: 10;
+  margin-top: 2px;
+  list-style: none;
+  padding: 0;
+  border-radius: 4px;
+}
+
+  .suggestions-list li {
+    padding: 8px;
+    cursor: pointer;
+  }
+
+    .suggestions-list li:hover {
+      background-color: #f2f2f2;
+    }

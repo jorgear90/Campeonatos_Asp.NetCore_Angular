@@ -52,7 +52,7 @@ namespace CampeonatosApp.Server.Controllers
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, correo),
+                new Claim(ClaimTypes.Email, correo), // Cambia esto
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

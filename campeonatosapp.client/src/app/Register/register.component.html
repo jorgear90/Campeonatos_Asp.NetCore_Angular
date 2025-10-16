@@ -6,11 +6,5 @@
   <button (click)="register()">Guardar</button>
   <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
 </div>
-<div *ngIf="isLoading"
-     class="bloqueo-pantalla"
-     style="">
-  <div class="carga-pantalla" role="status">
-    <span>Cargando...</span>
-  </div>
-</div>
+<app-is-loading [isLoading]="isLoading"></app-is-loading>
 

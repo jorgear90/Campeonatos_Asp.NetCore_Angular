@@ -1,0 +1,30 @@
+<div class="modal-backdrop">
+  <div class="modal-window p-3 rounded shadow bg-white">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5>Filtrar equipos</h5>
+      <button class="btn btn-sm btn-outline-danger" (click)="cerrar()">✕</button>
+    </div>
+
+    <div class="mb-3">
+      <label>Región</label>
+      <select class="form-select" [(ngModel)]="regionSeleccionada" (change)="onRegionChange()">
+        <option *ngFor="let region of regiones" [value]="region.id">
+          {{ region.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label>Comuna</label>
+      <select class="form-select" [(ngModel)]="comunaSeleccionada">
+        <option *ngFor="let comuna of comunas" [value]="comuna.id">
+          {{ comuna.nombre }}
+        </option>
+      </select>
+    </div>
+    <div class="text-end">
+      <button class="btn btn-primary" (click)="aplicar()">Aplicar filtros</button>
+    </div>
+  </div>
+</div>
+

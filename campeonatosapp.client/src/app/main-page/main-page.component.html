@@ -1,6 +1,8 @@
 <div class="toolbar">
   <button *ngIf="!isLoggedIn" (click)="irAlLogin()">Iniciar sesión</button>
   <button *ngIf="isLoggedIn" (click)="crearEquipo()">Crear equipo</button>
+  <button (click)="verEquipos()">Equipos</button>
+  <button *ngIf="isLoggedIn" (click)="misEquipos()">Mis equipos</button>
   <button *ngIf="isLoggedIn" (click)="crearCampeonato()">Crear campeonato</button>
   <button *ngIf="isLoggedIn" (click)="cerrarSesion()">Cerra sesión</button>
 </div>

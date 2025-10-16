@@ -3,10 +3,11 @@
   <input type="email" [(ngModel)]="correo" placeholder="Correo" />
   <input type="password" [(ngModel)]="password" placeholder="Contraseña" />
   <button (click)="login()">Ingresar</button>
+  <app-return-button [returnPath]="'/main'" [buttonText]="'Inicio'"></app-return-button>
   <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
 
   <p>
-    ¿No tienes cuenta? 
+    ¿No tienes cuenta?
     <a routerLink="/register">Crear cuenta</a>
   </p>
 </div>

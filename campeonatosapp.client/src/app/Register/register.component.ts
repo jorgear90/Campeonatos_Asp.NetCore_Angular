@@ -43,7 +43,7 @@ export class RegisterComponent {
         });
       },
       error: (err) => {
-        //console.error(err); // 👈 te muestra el error real en la consola
+        //console.error(err); // muestra el error real en la consola
         this.isLoading = false; 
         this.errorMessage = err.error?.message || err.error || 'Error desconocido';
       }

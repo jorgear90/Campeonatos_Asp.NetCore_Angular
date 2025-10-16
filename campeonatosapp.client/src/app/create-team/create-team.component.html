@@ -1,1 +1,11 @@
-<p>create-team works!</p>
+<div>
+  <h2>Crear equipo</h2>
+  <input type="text" [(ngModel)]="nombre" placeholder="Nombre" />
+  <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+  <button (click)="onSubmit()">Guardar</button>
+  <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+</div>
+
+<app-return-button [returnPath]="'/main'" [buttonText]="'Volver'"></app-return-button>
+
+<app-is-loading [isLoading]="isLoading"></app-is-loading>

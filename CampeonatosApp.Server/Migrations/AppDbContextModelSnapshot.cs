@@ -21,7 +21,7 @@ namespace CampeonatosApp.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CampeonatosApp.Server.Models.Equipo", b =>
+            modelBuilder.Entity("CampeonatosApp.Server.Models.Comuna", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,14 +33,40 @@ namespace CampeonatosApp.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RutaLogo")
+                    b.Property<int>("RegionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegionID");
+
+                    b.ToTable("Comunas");
+                });
+
+            modelBuilder.Entity("CampeonatosApp.Server.Models.Equipo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ComunaID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RutaLogo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsuarioID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ComunaID");
 
                     b.HasIndex("UsuarioID");
 
@@ -89,6 +115,23 @@ namespace CampeonatosApp.Server.Migrations
                     b.ToTable("Jugadores");
                 });
 
+            modelBuilder.Entity("CampeonatosApp.Server.Models.Region", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Regiones");
+                });
+
             modelBuilder.Entity("CampeonatosApp.Server.Models.Roles", b =>
                 {
                     b.Property<int>("Id")
@@ -118,6 +161,9 @@ namespace CampeonatosApp.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ComunaID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Contraseña")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -127,6 +173,8 @@ namespace CampeonatosApp.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ComunaID");
 
                     b.ToTable("Usuarios");
                 });
@@ -154,13 +202,32 @@ namespace CampeonatosApp.Server.Migrations
                     b.ToTable("UsuariosRoles");
                 });
 
+            modelBuilder.Entity("CampeonatosApp.Server.Models.Comuna", b =>
+                {
+                    b.HasOne("CampeonatosApp.Server.Models.Region", "Region")
+                        .WithMany("Comunas")
+                        .HasForeignKey("RegionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Region");
+                });
+
             modelBuilder.Entity("CampeonatosApp.Server.Models.Equipo", b =>
                 {
+                    b.HasOne("CampeonatosApp.Server.Models.Comuna", "Comuna")
+                        .WithMany("Equipos")
+                        .HasForeignKey("ComunaID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("CampeonatosApp.Server.Models.Usuario", "Usuario")
                         .WithMany("Equipos")
                         .HasForeignKey("UsuarioID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Comuna");
 
                     b.Navigation("Usuario");
                 });
@@ -174,6 +241,17 @@ namespace CampeonatosApp.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("CampeonatosApp.Server.Models.Usuario", b =>
+                {
+                    b.HasOne("CampeonatosApp.Server.Models.Comuna", "Comuna")
+                        .WithMany()
+                        .HasForeignKey("ComunaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comuna");
                 });
 
             modelBuilder.Entity("CampeonatosApp.Server.Models.UsuarioRoles", b =>
@@ -193,6 +271,16 @@ namespace CampeonatosApp.Server.Migrations
                     b.Navigation("Roles");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("CampeonatosApp.Server.Models.Comuna", b =>
+                {
+                    b.Navigation("Equipos");
+                });
+
+            modelBuilder.Entity("CampeonatosApp.Server.Models.Region", b =>
+                {
+                    b.Navigation("Comunas");
                 });
 
             modelBuilder.Entity("CampeonatosApp.Server.Models.Roles", b =>
