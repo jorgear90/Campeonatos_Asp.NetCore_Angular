@@ -25,6 +25,13 @@ namespace CampeonatosApp.Server.Services
 
             return comunas;
         }
+
+        public async Task<List<RegionesDto>> ObtenerRegiones()
+        {
+            var regiones = await _context.Regiones.Select(r => new RegionesDto { Id = r.Id, Nombre = r.Nombre }).ToListAsync();
+
+            return regiones;
+        }
     }
 
     public class ComunaDto
@@ -33,5 +40,10 @@ namespace CampeonatosApp.Server.Services
         public string Nombre { get; set; } = string.Empty;
     }
 
+    public class RegionesDto
+    {
+        public int Id { get; set; }
+        public string Nombre { get; set; } = string.Empty;
+    }
 
 }

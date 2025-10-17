@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CampeonatosApp.Server.Data;
 using CampeonatosApp.Server.Models;
+using CampeonatosApp.Server.Services;
 
 namespace CampeonatosApp.Server.Controllers
 {
@@ -15,18 +16,26 @@ namespace CampeonatosApp.Server.Controllers
     public class RegionesController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly LocacionService _locacionService;
 
-        public RegionesController(AppDbContext context)
+        public RegionesController(AppDbContext context, LocacionService locacionService)
         {
             _context = context;
+            _locacionService = locacionService;
         }
 
         [HttpGet("getRegiones")]
-        public async Task<IActionResult> GetRegiones()
+        public async Task<IActionResult> GetComunas()
         {
-            var regiones = await _context.Regiones.Select(r => new { r.Id, r.Nombre }).ToListAsync();
-
-            return Ok(regiones);
+            try
+            {
+                var regiones = await _locacionService.ObtenerRegiones();
+                return Ok(regiones);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
 
     }

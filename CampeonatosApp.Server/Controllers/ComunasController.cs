@@ -32,8 +32,6 @@ namespace CampeonatosApp.Server.Controllers
             }
             catch (Exception ex)
             {
-                // Loggear el error
-                Console.WriteLine($"Error: {ex.Message}");
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
