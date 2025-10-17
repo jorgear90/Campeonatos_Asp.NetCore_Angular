@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { LocationService } from '../../services/location/location.service';
 
 @Component({
   selector: 'app-filter',
@@ -22,17 +23,14 @@ export class FilterComponent implements OnInit {
     overlayY: 'top'
   };
 
-  private apiUrlRegiones = environment.apiRegionesUrl;
-  private apiUrlComunas = environment.apiComunasUrl;
-
-  constructor(private http: HttpClient) { }
+  constructor(private locationService: LocationService) { }
 
   ngOnInit(): void {
     this.cargarRegiones();
   }
 
   cargarRegiones(): void {
-    this.http.get<any[]>(`${this.apiUrlRegiones}/getRegiones`).subscribe(data => {
+    this.locationService.getRegiones().subscribe(data => {
       this.regiones = data;
       if (this.regiones.length > 0) {
         this.regionSeleccionada = this.regiones[0].id;
@@ -44,7 +42,7 @@ export class FilterComponent implements OnInit {
   }
   
   cargarComunas(regionId: number): void {
-    this.http.get<any[]>(`${this.apiUrlComunas}/getComunas/${regionId}`).subscribe(data => {
+    this.locationService.getComunas(regionId).subscribe(data => {
       this.comunas = [...data];
     });
   }

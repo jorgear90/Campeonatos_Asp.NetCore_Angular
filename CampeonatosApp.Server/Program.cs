@@ -33,6 +33,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<EquipoService>();
+builder.Services.AddScoped<LocacionService>();
 builder.Services.AddHttpContextAccessor();
 
 // ?? Configurar JWT

@@ -28,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { LocationService } from './services/location/location.service';
 
 
 @NgModule({
@@ -39,7 +40,7 @@ import { MatOptionModule } from '@angular/material/core';
     AppRoutingModule, FormsModule, BrowserAnimationsModule, MatSelectModule, MatFormFieldModule,
     MatOptionModule
   ],
-  providers: [AuthService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, TeamsService, provideAnimationsAsync('noop')],
+  providers: [AuthService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, TeamsService, provideAnimationsAsync('noop'), LocationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,27 +7,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CampeonatosApp.Server.Data;
 using CampeonatosApp.Server.Models;
+using CampeonatosApp.Server.Services;
 
 namespace CampeonatosApp.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ComunasController : Controller
+    public class ComunasController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly LocacionService _locacionService;
 
-        public ComunasController(AppDbContext context)
+        public ComunasController(LocacionService locacionService)
         {
-            _context = context;
+            _locacionService = locacionService;
         }
 
         [HttpGet("getComunas/{regionId}")]
-        public async Task<IActionResult> GetComunasPorRegion(int regionId)
+        public async Task<IActionResult> GetComunas(int regionId)
         {
-            var comunas = await _context.Comunas.Where(c => c.Region.Id == regionId).Select(c => new { c.Id, c.Nombre }).ToListAsync();
-
-            return Ok(comunas);
+            try
+            {
+                var comunas = await _locacionService.ObtenerComunas(regionId);
+                return Ok(comunas);
+            }
+            catch (Exception ex)
+            {
+                // Loggear el error
+                Console.WriteLine($"Error: {ex.Message}");
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
-
     }
+
 }

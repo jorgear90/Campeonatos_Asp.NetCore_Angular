@@ -29,8 +29,8 @@ export class AuthService {
     );
   }
 
-  register(correo: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { correo, password });
+  register(correo: string, password: string, comunaID: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, { correo, password, comunaID });
   }
 
   isAuthenticated(): boolean {

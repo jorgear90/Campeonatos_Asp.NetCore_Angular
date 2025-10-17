@@ -1,10 +1,24 @@
 <div>
   <h2>Crear cuenta</h2>
   <input type="email" [(ngModel)]="correo" placeholder="Correo" />
+  <select class="form-select" [(ngModel)]="regionSeleccionada" (change)="onRegionChange()">
+    <option *ngFor="let region of regiones" [value]="region.id">
+      {{ region.nombre }}
+    </option>
+  </select>
+  <div class="mb-3">
+    <label>Comuna</label>
+    <select class="form-select" [(ngModel)]="comunaSeleccionada">
+      <option *ngFor="let comuna of comunas" [value]="comuna.id">
+        {{ comuna.nombre }}
+      </option>
+    </select>
+  </div>
   <input type="password" [(ngModel)]="password" placeholder="Contraseña" />
   <input type="password" [(ngModel)]="confirmPassword" placeholder="Repite la contraseña" />
   <button (click)="register()">Guardar</button>
   <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
 </div>
+<app-return-button [returnPath]="'/login'" [buttonText]="'Login'"></app-return-button>
 <app-is-loading [isLoading]="isLoading"></app-is-loading>
 

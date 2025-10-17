@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { LocationService } from '../services/location/location.service';
 
 @Component({
   selector: 'app-register',
@@ -13,10 +14,54 @@ export class RegisterComponent {
   password = '';
   confirmPassword = '';
   errorMessage = '';
+  regiones: any[] = [];
+  comunas: any[] = [];
+  regionSeleccionada: number | null = null;
+  comunaSeleccionada: number = 0;
+  isLoggedIn = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private locationService: LocationService) { }
 
   isLoading = false;
+
+  ngOnInit(): void {
+    this.authService.isLoggedIn$.subscribe(status => {
+      this.isLoggedIn = status;
+    });
+    if (this.isLoggedIn) {
+      this.router.navigate(['/main']);
+    }
+    this.isLoading = true;
+    this.cargarRegiones();
+    this.isLoading = false;
+  }
+
+  cargarRegiones(): void {
+    this.locationService.getRegiones().subscribe(data => {
+      this.regiones = data;
+      if (this.regiones.length > 0) {
+        this.regionSeleccionada = this.regiones[0].id;
+        if (this.regionSeleccionada !== null) {
+          this.cargarComunas(this.regionSeleccionada);
+        }
+      }
+    });
+  }
+
+  cargarComunas(regionId: number): void {
+    this.locationService.getComunas(regionId).subscribe(data => {
+      this.comunas = [...data];
+      if (this.comunas.length > 0) {
+        this.comunaSeleccionada = this.comunas[0].id;
+      }
+    });
+  }
+
+  onRegionChange(): void {
+    if (this.regionSeleccionada)
+      this.cargarComunas(this.regionSeleccionada);
+  }
+
 
   register() {
     if (this.password !== this.confirmPassword) {
@@ -26,7 +71,7 @@ export class RegisterComponent {
 
     this.isLoading = true;
 
-    this.authService.register(this.correo, this.password).subscribe({
+    this.authService.register(this.correo, this.password, this.comunaSeleccionada).subscribe({
       next: (res) => {
 
         this.isLoading = false;
@@ -43,32 +88,9 @@ export class RegisterComponent {
         });
       },
       error: (err) => {
-        //console.error(err); // muestra el error real en la consola
         this.isLoading = false; 
         this.errorMessage = err.error?.message || err.error || 'Error desconocido';
       }
     });
   }
-
-  /*register() {
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden';
-      return;
-    }
-
-    this.authService.register(this.correo, this.password).subscribe({
-      next: () => alert('Usuario creado correctamente!'),
-      error: (err) => {
-        console.error(err);
-        if (err.error && typeof err.error === 'object' && err.error.message) {
-          this.errorMessage = err.error.message;
-        } else if (typeof err.error === 'string') {
-          this.errorMessage = err.error;
-        } else {
-          this.errorMessage = 'Error al conectar con el servidor';
-        }
-      }
-    });
-
-  }*/
 }

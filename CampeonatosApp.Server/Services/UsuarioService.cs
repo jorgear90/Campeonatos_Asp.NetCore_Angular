@@ -2,11 +2,6 @@
 using CampeonatosApp.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-
 
 namespace CampeonatosApp.Server.Services
 {
@@ -21,12 +16,13 @@ namespace CampeonatosApp.Server.Services
             _passwordHasher = new PasswordHasher<Usuario>();
         }
 
-        public async Task<bool> CrearUsuario(string correo, string password)
+        public async Task<bool> CrearUsuario(string correo, string password, int idComuna)
         {
+            var aaa = idComuna;
             if (_context.Usuarios.Any(u => u.Correo == correo))
                 return false;
 
-            var usuario = new Usuario { Correo = correo };
+            var usuario = new Usuario { Correo = correo, ComunaID = idComuna };
             usuario.Contraseña = _passwordHasher.HashPassword(usuario, password);
 
             _context.Usuarios.Add(usuario);

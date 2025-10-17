@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using CampeonatosApp.Server.Data;
-using CampeonatosApp.Server.Models;
 using CampeonatosApp.Server.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,7 +25,7 @@ namespace CampeonatosApp.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UsuarioDto dto)
         {
-            var result = await _usuarioService.CrearUsuario(dto.Correo, dto.Contraseña);
+            var result = await _usuarioService.CrearUsuario(dto.Correo, dto.Contraseña, dto.ComunaID);
             if (!result) return BadRequest("El correo ya existe");
             return Ok(new { message = "Usuario creado correctamente" });
         }
@@ -73,6 +68,7 @@ namespace CampeonatosApp.Server.Controllers
         {
             public string Correo { get; set; } = string.Empty;
             public string Contraseña { get; set; } = string.Empty;
+            public int ComunaID {  get; set; }
         }
     }
 }
