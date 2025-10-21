@@ -11,21 +11,18 @@ export class TeamsService {
 
   constructor(private http: HttpClient) { }
 
-  uploadLogo(nombre: string, logo: File): Observable<any> {
+  uploadLogo(nombre: string, logo: File, comunaId: number): Observable<any> {
     const formData = new FormData();
     formData.append('nombre', nombre);
-    formData.append('logo', logo);  
+    formData.append('logo', logo);
+    formData.append('comunaId', comunaId.toString());
 
-    // Obtener el token del localStorage
     const token = localStorage.getItem('token');
-
-    // Crear headers con el token
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
 
     return this.http.post(`${this.apiUrl}/createTeams`, formData, { headers });
-
   }
 
 

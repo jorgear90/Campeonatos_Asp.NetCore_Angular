@@ -1,6 +1,23 @@
 <div>
   <h2>Crear equipo</h2>
   <input type="text" [(ngModel)]="nombre" placeholder="Nombre" />
+  <div class="mb-3">
+    <label>Región</label>
+    <select class="form-select" [(ngModel)]="regionSeleccionada" (change)="onRegionChange()">
+      <option *ngFor="let region of regiones" [value]="region.id">
+        {{ region.nombre }}
+      </option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Comuna</label>
+    <select class="form-select" [(ngModel)]="comunaSeleccionada">
+      <option *ngFor="let comuna of comunas" [value]="comuna.id">
+        {{ comuna.nombre }}
+      </option>
+    </select>
+  </div>
   <input type="file" (change)="onFileSelected($event)" accept="image/*" />
   <button (click)="onSubmit()">Guardar</button>
   <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>

@@ -32,12 +32,28 @@ namespace CampeonatosApp.Server.Controllers
 
         [Authorize]
         [HttpPost("createTeams")]
-        public async Task<IActionResult> CreateTeams([FromForm] string nombre,  IFormFile logo)
+        public async Task<IActionResult> CreateTeams([FromForm] CrearEquipoDto dto)
         {
-            var result = await _equipoService.CrearEquipo(nombre, logo);
-            if (!result) return BadRequest("Error al crear el equipo");
-            return Ok(new { message = "Equipo creado correctamente" });
+            try
+            {
+                var result = await _equipoService.CrearEquipo(dto.Nombre, dto.Logo, dto.ComunaId);
+
+                if (!result)
+                    return BadRequest("Solo puede registrar hasta 10 equipos");
+
+                return Ok(new { message = "Equipo creado correctamente" });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ocurrió un error inesperado en el servidor." });
+            }
         }
+
+
 
         [HttpGet("teamNames")]
         public async Task<IActionResult> GetTeamNames(int? regionId = null, int? comunaId = null)
@@ -168,6 +184,13 @@ namespace CampeonatosApp.Server.Controllers
             public string Region { get; set; }
             public int RegionID { get; set; }
             public int ComunaID { get; set; }
+        }
+
+        public class CrearEquipoDto
+        {
+            [FromForm] public string Nombre { get; set; } = string.Empty;
+            [FromForm] public int ComunaId { get; set; }
+            [FromForm] public IFormFile? Logo { get; set; }
         }
     }
 }

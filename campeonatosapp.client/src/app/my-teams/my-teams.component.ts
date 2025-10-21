@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { TeamsService } from '../services/teams/teams.service';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-teams',
@@ -13,9 +15,12 @@ export class MyTeamsComponent {
   isLoading = true;
   apiUrl = environment.apiUrl;
 
-  constructor(private teamsService: TeamsService) { }
+  constructor(private teamsService: TeamsService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+    }
     this.teamsService.getMyTeams().subscribe({
       next: (res) => {
         this.isLoading = false;

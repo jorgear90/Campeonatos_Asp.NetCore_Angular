@@ -3,6 +3,7 @@ using CampeonatosApp.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using static CampeonatosApp.Server.Controllers.EquiposController;
 
@@ -19,7 +20,7 @@ namespace CampeonatosApp.Server.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<bool> CrearEquipo(string nombre, IFormFile logo)
+        public async Task<bool> CrearEquipo(string nombre, IFormFile logo, int comunaId)
         {
             var correo = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
 
@@ -35,7 +36,14 @@ namespace CampeonatosApp.Server.Services
                 throw new Exception($"Usuario con correo {correo} no encontrado");
             }
 
-            var equipo = new Equipo { Nombre = nombre, RutaLogo = $"/logos/sin-logo/pngwing.com.png", UsuarioID = idUsuario };
+            var equiposUsuario = await _context.Equipos.Where(e => e.UsuarioID == idUsuario).ToListAsync();
+
+            if (equiposUsuario.Count >= 10)
+            {
+                return false;
+            }
+
+            var equipo = new Equipo { Nombre = nombre, RutaLogo = $"/logos/sin-logo/pngwing.com.png", UsuarioID = idUsuario, ComunaID = comunaId };
 
             _context.Equipos.Add(equipo);
             await _context.SaveChangesAsync();
@@ -64,7 +72,6 @@ namespace CampeonatosApp.Server.Services
             }
 
             return true;
-            //return Ok(new { message = "Logo guardado correctamente", fileName = logo.FileName });
         }
 
         public async Task<List<EquipoDto>> ObtenerEquipos(int? regionUsuarioId, int page = 1, int pageSize = 10)
