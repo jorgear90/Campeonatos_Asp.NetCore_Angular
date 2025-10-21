@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TeamsService } from '../services/teams/teams.service';
-import { environment } from '../../environments/environment';
+import { TeamsService } from '../../../core/services/teams/teams.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-view-teams',

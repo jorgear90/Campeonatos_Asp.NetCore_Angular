@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { TeamsService } from '../services/teams/teams.service';
+import { TeamsService } from '../../../core/services/teams/teams.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
 import Swal from 'sweetalert2';
-import { LocationService } from '../services/location/location.service';
+import { LocationService } from '../../../core/services/location/location.service';
 
 @Component({
   selector: 'app-create-team',

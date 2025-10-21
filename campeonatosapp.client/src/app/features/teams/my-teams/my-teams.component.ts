@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { TeamsService } from '../services/teams/teams.service';
-import { environment } from '../../environments/environment';
-import { AuthService } from '../services/auth.service';
+import { TeamsService } from '../../../core/services/teams/teams.service';
+import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { LocationService } from '../services/location/location.service';
+import { LocationService } from '../../../core/services/location/location.service';
 
 @Component({
   selector: 'app-register',

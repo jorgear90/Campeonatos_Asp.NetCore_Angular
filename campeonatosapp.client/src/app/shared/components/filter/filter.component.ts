@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { LocationService } from '../../services/location/location.service';
+import { environment } from '../../../../environments/environment';
+import { LocationService } from '../../../core/services/location/location.service';
 
 @Component({
   selector: 'app-filter',
