@@ -8,6 +8,7 @@
         <th>Region</th>
         <th>Comuna</th>
         <th>Logo</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +18,9 @@
         <td>{{ equipo.comuna }}</td>
         <td>
           <img [src]="getLogoUrl(equipo)" alt="Logo del equipo" width="80">
+        </td>
+        <td>
+          <button (click)="editarEquipo(equipo.id)"></button>
         </td>
       </tr>
     </tbody>

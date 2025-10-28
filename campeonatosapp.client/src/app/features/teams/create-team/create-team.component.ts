@@ -40,7 +40,6 @@ export class CreateTeamComponent {
     const file: File = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      console.log('Imagen seleccionada:', file.name);
     }
   }
 

@@ -1,5 +1,6 @@
 ﻿using CampeonatosApp.Server.Data;
 using CampeonatosApp.Server.Models;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +75,74 @@ namespace CampeonatosApp.Server.Services
             return true;
         }
 
+        public async Task<bool> EditarEquipo(int id, string nombre, int comunaId, IFormFile logo)
+        {
+            /*var correo = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(correo))
+            {
+                throw new UnauthorizedAccessException("Usuario no autenticado");
+            }
+
+            var idUsuario = await _context.Usuarios.Where(u => u.Correo == correo).Select(u => u.Id).FirstOrDefaultAsync(); ;
+
+            if (idUsuario == 0)
+            {
+                throw new Exception($"Usuario con correo {correo} no encontrado");
+            }*/
+
+            var equipo = await _context.Equipos.Where(e => e.Id == id).FirstOrDefaultAsync();
+
+            //var equipo = new Equipo { Nombre = nombre, RutaLogo = $"/logos/sin-logo/pngwing.com.png", UsuarioID = idUsuario, ComunaID = comunaId };
+
+            equipo.ComunaID = comunaId;
+            equipo.Nombre = nombre;
+
+            _context.Equipos.Update(equipo);
+            await _context.SaveChangesAsync();
+
+            var editar = 1;
+
+            await crearLogo(logo, equipo.Id, editar);
+
+            return true;
+        }
+
+        public async Task crearLogo(IFormFile logo, int id, int editar)
+        {
+            var equipo = await _context.Equipos.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (logo != null && logo.Length > 0)
+            {
+                // eliminar imagen anterior
+                if (editar == 1 && equipo.RutaLogo != "/logos/sin-logo/pngwing.com.png")
+                {
+                    var rutaFisica = Path.Combine("wwwroot", equipo.RutaLogo.TrimStart('/'));
+                    if (System.IO.File.Exists(rutaFisica))
+                    {
+                        System.IO.File.Delete(rutaFisica);
+                    }
+                }
+
+                var carpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logos", "equipos", id.ToString());
+
+                if (!Directory.Exists(carpeta))
+                    Directory.CreateDirectory(carpeta);
+
+                var filePath = Path.Combine(carpeta, logo.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await logo.CopyToAsync(stream);
+                }
+
+                equipo.RutaLogo = $"/logos/equipos/{id}/{logo.FileName}";
+                _context.Equipos.Update(equipo);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
         public async Task<List<EquipoDto>> ObtenerEquipos(int? regionUsuarioId, int page = 1, int pageSize = 10)
         {
 
@@ -124,7 +193,13 @@ namespace CampeonatosApp.Server.Services
                 query = query.Where(e => e.Comuna.Region.Id == regionId.Value);
 
             if (comunaId.HasValue)
-                query = query.Where(e => e.Comuna.Id == comunaId.Value);
+            {
+                if(comunaId.Value != 0)
+                {
+                    query = query.Where(e => e.Comuna.Id == comunaId.Value);
+                }
+            }
+                
 
             // 👤 Jerarquía por región del usuario
             if (regionUsuarioId.HasValue)
@@ -180,11 +255,26 @@ namespace CampeonatosApp.Server.Services
                     Nombre = e.Nombre,
                     RutaLogo = e.RutaLogo,
                     Comuna = e.Comuna != null ? e.Comuna.Nombre : "Sin comuna",
-                    Region = e.Comuna != null && e.Comuna.Region != null ? e.Comuna.Region.Nombre : "Sin región"
+                    Region = e.Comuna != null && e.Comuna.Region != null ? e.Comuna.Region.Nombre : "Sin región",
                 })
                 .ToListAsync();
 
             return listaEquipos;
+
+        }
+
+        public async Task<EquipoDto> ObtenerMiEquipo(int id)
+        {
+            var equipo = await _context.Equipos.Where(e => e.Id == id).Include(e => e.Comuna).ThenInclude(c => c.Region).Select(e => new EquipoDto
+            {
+                Id = e.Id,
+                Nombre = e.Nombre,
+                RutaLogo = e.RutaLogo,
+                Comuna = e.Comuna != null ? e.Comuna.Nombre : "Sin comuna",
+                Region = e.Comuna != null && e.Comuna.Region != null ? e.Comuna.Region.Nombre : "Sin región",
+            }).FirstOrDefaultAsync();
+
+            return equipo;
 
         }
     }

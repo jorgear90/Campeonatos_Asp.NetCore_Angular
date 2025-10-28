@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreateChampionshipComponent } from './create-championship/create-championship.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
@@ -19,7 +18,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/main/main.module').then(m => m.MainModule)
   },
-  { path: 'create-championship', component: CreateChampionshipComponent },
   { path: '**', redirectTo: 'main' }
 
 ];

@@ -5,6 +5,7 @@ import { LocationService } from './services/location/location.service';
 import { TeamsService } from './services/teams/teams.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { EncryptionService } from './services/encryption/encryption.service';
 
 
 
@@ -13,7 +14,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
   imports: [
     CommonModule
   ],
-  providers: [AuthService, LocationService, TeamsService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [AuthService, LocationService, TeamsService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, EncryptionService],
   exports: []
 })
 export class CoreModule {

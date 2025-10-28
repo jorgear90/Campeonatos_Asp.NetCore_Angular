@@ -3,6 +3,7 @@ import { TeamsService } from '../../../core/services/teams/teams.service';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { EncryptionService } from '../../../core/services/encryption/encryption.service';
 
 @Component({
   selector: 'app-my-teams',
@@ -15,7 +16,7 @@ export class MyTeamsComponent {
   isLoading = true;
   apiUrl = environment.apiUrl;
 
-  constructor(private teamsService: TeamsService, private authService: AuthService, private router: Router) { }
+  constructor(private teamsService: TeamsService, private authService: AuthService, private encryptionService: EncryptionService, private router: Router) { }
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) {
@@ -41,5 +42,11 @@ export class MyTeamsComponent {
     return equipo.rutaLogo
       ? `${this.apiUrl}${equipo.rutaLogo}`
       : 'assets/img/default-logo.png';
+  }
+
+  editarEquipo(id: number) {
+    const encryptedId = this.encryptionService.encrypt(id.toString());
+    sessionStorage.setItem('equipoId', encryptedId);
+    this.router.navigate(['/edit-team']);
   }
 }

@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { environment } from '../../../../environments/environment';
 import { LocationService } from '../../../core/services/location/location.service';
 
 @Component({
@@ -16,12 +14,6 @@ export class FilterComponent implements OnInit {
   comunas: any[] = [];
   regionSeleccionada: number | null = null;
   comunaSeleccionada: number | null = null;
-  connectedOverlayPosition = {
-    originX: 'start',
-    originY: 'bottom',
-    overlayX: 'start',
-    overlayY: 'top'
-  };
 
   constructor(private locationService: LocationService) { }
 
@@ -43,11 +35,18 @@ export class FilterComponent implements OnInit {
   
   cargarComunas(regionId: number): void {
     this.locationService.getComunas(regionId).subscribe(data => {
+      let selecionaComuna = {id: 0, nombre: 'Todas las comunas'}
       this.comunas = [...data];
+      this.comunas.unshift(selecionaComuna)
+      if (this.comunas.length > 0) {
+        this.comunaSeleccionada = this.comunas[0].id;
+      }
     });
   }
 
   onRegionChange(): void {
+    //this.comunas = []; // limpia comunas
+    //this.comunaSeleccionada = 0; // reinicia selección
     if (this.regionSeleccionada)
       this.cargarComunas(this.regionSeleccionada);
   }

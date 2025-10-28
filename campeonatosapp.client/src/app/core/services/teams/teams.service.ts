@@ -55,4 +55,22 @@ export class TeamsService {
     return this.http.get(`${this.apiUrl}/getMyTeams`);
   }
 
+  getTeam(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getMyTeam/${id}`);
+  }
+
+  upDate(id: number, nombre: string, comunaId: number, logo: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('id', id.toString());
+    formData.append('nombre', nombre);
+    formData.append('comunaId', comunaId.toString());
+    formData.append('logo', logo);
+
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.apiUrl}/editTeam`, formData, { headers });
+  }
 }

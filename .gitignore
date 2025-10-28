@@ -35,3 +35,6 @@ packages/
 *.DotSettings.user
 
 .vs/
+
+# Ignorar el servicio de encriptación temporalmente
+campeonatosapp.client/src/app/core/services/encryption/

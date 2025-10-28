@@ -12,6 +12,7 @@ using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using System.Drawing.Printing;
 using System.Security.Claims;
+using System.Drawing.Text;
 
 namespace CampeonatosApp.Server.Controllers
 {
@@ -53,7 +54,27 @@ namespace CampeonatosApp.Server.Controllers
             }
         }
 
+        [HttpPost("editTeam")]
+        public async Task<IActionResult> editTeam([FromForm] EditarEquipoDto dto)
+        {
+            try
+            {
+                var result = await _equipoService.EditarEquipo(dto.Id, dto.Nombre, dto.ComunaId, dto.Logo);
 
+                if (!result)
+                    return BadRequest("Solo puede registrar hasta 10 equipos");
+
+                return Ok(new { message = "Equipo creado correctamente" });
+            }
+            /*catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }*/
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ocurrió un error inesperado en el servidor." });
+            }
+        }
 
         [HttpGet("teamNames")]
         public async Task<IActionResult> GetTeamNames(int? regionId = null, int? comunaId = null)
@@ -175,6 +196,28 @@ namespace CampeonatosApp.Server.Controllers
             }
         }
 
+        [HttpGet("getMyTeam/{id}")]
+        public async Task<IActionResult> getMyTeam(int id)
+        {
+            try
+            {
+                var equipo = await _equipoService.ObtenerMiEquipo(id);
+
+                if (equipo == null)
+                    return Ok(new { message = "No se encuentra el equipo" });
+
+                return Ok(new { message = "Equipo obtenido correctamente", equipo });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized(new { message = "Usuario no autenticado" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         public class EquipoDto
         {
             public int Id { get; set; }
@@ -186,11 +229,17 @@ namespace CampeonatosApp.Server.Controllers
             public int ComunaID { get; set; }
         }
 
-        public class CrearEquipoDto
-        {
+        public class AccionesEquipo {
             [FromForm] public string Nombre { get; set; } = string.Empty;
             [FromForm] public int ComunaId { get; set; }
             [FromForm] public IFormFile? Logo { get; set; }
+        }
+
+        public class CrearEquipoDto: AccionesEquipo { }
+
+        public class EditarEquipoDto: AccionesEquipo
+        {
+            [FromForm] public int Id { get; set; }
         }
     }
 }

@@ -7,10 +7,11 @@ import { CreateTeamComponent } from './create-team/create-team.component';
 import { MyTeamsComponent } from './my-teams/my-teams.component';
 import { ViewTeamsComponent } from './view-teams/view-teams.component';
 import { FormsModule } from '@angular/forms';
+import { EditTeamsComponent } from './edit-teams/edit-teams.component';
 
 
 @NgModule({
-  declarations: [CreateTeamComponent, MyTeamsComponent, ViewTeamsComponent],
+  declarations: [CreateTeamComponent, MyTeamsComponent, ViewTeamsComponent, EditTeamsComponent],
   imports: [
     CommonModule, FormsModule,
     TeamsRoutingModule, SharedModule
