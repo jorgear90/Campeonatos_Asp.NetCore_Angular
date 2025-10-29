@@ -2,11 +2,8 @@
 
 namespace CampeonatosApp.Server.Models
 {
-    public partial class Roles
+    public partial class Roles : EntidadBase
     {
-        [Key]
-        public int Id { get; set; }
-        public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
         //CLAVE FORANEA DE SALIDA

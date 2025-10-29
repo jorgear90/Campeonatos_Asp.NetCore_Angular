@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampeonatosApp.Server.Models
 {
-    public partial class Equipo
+    public partial class Equipo : EntidadBase
     {
-        [Key]
-        public int Id { get; set; }
-        public string Nombre { get; set; }
         public string? RutaLogo { get; set; }
         public int ComunaID {  get; set; }
         public int UsuarioID { get; set; }

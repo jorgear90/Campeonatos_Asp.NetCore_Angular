@@ -3,13 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampeonatosApp.Server.Models
 {
-    public partial class Jugador
+    public partial class Jugador : EntidadBase
     {
-        [Key]
-        public int Id { get; set; }
         public string Rut {  get; set; }
         public string RutaCopiaDocumento { get; set; }
-        public string Nombre {  get; set; }
         public string Apellido { get; set; }
         public string AnioNacimiento { get; set; }
         public string Correo {  get; set; }

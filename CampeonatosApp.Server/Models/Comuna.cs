@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampeonatosApp.Server.Models
 {
-    public partial class Comuna
+    public partial class Comuna: EntidadBase
     {
-        [Key]
-        public int Id { get; set; }
-        public string Nombre { get; set; }
         public int RegionID { get; set; }
 
         //Clave foranea
